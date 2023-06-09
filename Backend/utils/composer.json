@@ -1,9 +1,0 @@
-{
-  "description": "My PHP project",
-  "name": "proflex/test-php-prog" ,
-  "require": {
-    "php": ">=7.0.0",
-    "monolog/monolog": "1.0.*",
-    "doctrine/migrations": "^3.6"
-  }
-}
