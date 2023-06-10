@@ -1,5 +1,12 @@
 <?php
 
-var_dump( substr($_SERVER['PHP_SELF'], 1));
+
+include ('includes/config.php');
+include ('includes/database.php');
+include ('includes/functions.php');
+
+
+include('includes/com/layouts/main.php');
+
 
 ?>
