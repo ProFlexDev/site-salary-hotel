@@ -4,6 +4,8 @@
 if ($_SERVER['PHP_SELF'] == '/index.php') $page = 'Home';
 if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php') $page = 'Table salary';
 
+$href_month_table = 'includes/com/page/month_table.php';
+
 
 ?>
 
@@ -26,7 +28,7 @@ if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php') $page = 'Table
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="includes/com/page/month_table.php">Salary schedule table</a>
+                    <a class="nav-link active" aria-current="page" href=' <?= $href_month_table ?> '>Salary schedule table</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contacts</a>

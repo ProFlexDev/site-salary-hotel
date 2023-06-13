@@ -15,8 +15,8 @@ function getMonthlyReport($month, $staffId)
     $query = "
     SELECT
     DATE_FORMAT(start, '%Y-%m-%d') AS date,
-    MIN(start) AS start_time,
-    MAX(end) AS end_time,
+    TIME_FORMAT(MIN(start), '%H:%i') AS start_time,
+    TIME_FORMAT(MAX(end), '%H:%i') AS end_time,
     SUM(CASE WHEN work = 1 THEN 1 ELSE 0 END) AS general_cleanings,
     SUM(CASE WHEN work = 2 THEN 1 ELSE 0 END) AS current_cleanings,
     SUM(CASE WHEN work = 3 THEN 1 ELSE 0 END) AS check_ins,
