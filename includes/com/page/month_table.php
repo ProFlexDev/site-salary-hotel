@@ -23,14 +23,14 @@ $month = 9;
 $monthlyReport = getMonthlyReport($month, $staffId);
 
 // Вывод отчета по всем работам за сентябрь
-echo "<table>";
-echo "<tr><th>Дата</th><th>Начало рабочего дня</th><th>Конец рабочего дня</th><th>Кол-во генеральных уборок</th><th>Кол-во текущих уборок</th><th>Кол-во заездов</th><th>Сумма оплаты за день</th></tr>";
+echo "<table class='table table-striped'>";
+echo "<thead><tr><th>Дата</th><th>Начало рабочего дня</th><th>Конец рабочего дня</th><th>Кол-во генеральных уборок</th><th>Кол-во текущих уборок</th><th>Кол-во заездов</th><th>Сумма оплаты за день</th></tr></thead>";
+echo "<tbody>";
 
 $totalPayment = 0;
 
 foreach ($monthlyReport as $report) {
     echo "<tr>";
-    // echo "<td><a href=\"daily_work.php?date={$report['date']}\">{$report['date']}</a></td>";
     echo "<td><a href=\"one_day_work.php?date={$report['date']}\">{$report['date']}</a></td>";
     echo "<td>{$report['start_time']}</td>";
     echo "<td>{$report['end_time']}</td>";
@@ -43,6 +43,7 @@ foreach ($monthlyReport as $report) {
     $totalPayment += $report['total_payment'];
 }
 
+echo "</tbody>";
 echo "</table>";
 
 echo "<p>Итоговая сумма за сентябрь: $totalPayment руб.</p>";
@@ -56,9 +57,10 @@ if (isset($_GET['date'])) {
 
 
     // Вывод результатов
-    echo "<table>";
-    echo "<tr><th>id_work</th><th>Номер комнаты</th><th>Категория комнаты</th><th>Тип уборки</th><th>Начало работы</th><th>Конец работы</th><th>Стоимость уборки</th></tr>";
-
+    echo "<table class='table table-striped'>";
+    echo "<thead><tr><th>id_work</th><th>Номер комнаты</th><th>Категория комнаты</th><th>Тип уборки</th><th>Начало работы</th><th>Конец работы</th><th>Стоимость уборки</th></tr></thead>";
+    echo "<tbody>";
+    
     foreach ($workList as $work) {
         echo "<tr>";
         echo "<td>{$work['id_work']}</td>";
@@ -70,11 +72,12 @@ if (isset($_GET['date'])) {
         echo "<td>{$work['cleaning_price']}</td>";
         echo "</tr>";
     }
-
+    
+    echo "</tbody>";
     echo "</table>";
 
 
-    echo "<p>Итоговая сумма за день: $totalPayment руб.</p>";
+    // echo "<p>Итоговая сумма за день: $totalPayment руб.</p>";
 
     // Закрытие соединения
 
