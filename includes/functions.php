@@ -21,20 +21,27 @@ function getMonthlyReport($month, $staffId)
     SUM(CASE WHEN work = 2 THEN 1 ELSE 0 END) AS current_cleanings,
     SUM(CASE WHEN work = 3 THEN 1 ELSE 0 END) AS check_ins,
     (
-        SELECT
-            SUM(subquery.price)
-        FROM
-            (
                 SELECT
-                    s.created,
-                    p.price
+                    
+                    SUM(subquery.cleaning_price) AS total_payment
                 FROM
-                    statistics s
+                    statistics
                 INNER JOIN
-                    prices p ON s.work = p.work
+                    rooms ON statistics.room = rooms.num
+                INNER JOIN
+                    (
+                    SELECT
+                        s.id AS id_work,
+                        p.price AS cleaning_price
+                    FROM
+                        statistics s
+                    INNER JOIN
+                        prices p ON s.work = p.work
+                    ) AS subquery ON statistics.id = subquery.id_work
                 WHERE
-                    DATE(s.created) = DATE_FORMAT(start, '%Y-%m-%d')
-            ) AS subquery
+                    DATE(statistics.created) = date
+                GROUP BY
+                    DATE(statistics.created)
     ) AS total_payment
     FROM
         statistics
@@ -46,7 +53,7 @@ function getMonthlyReport($month, $staffId)
     GROUP BY
         date
     ORDER BY
-        date ASC
+        date ASC;
 
     ";
 
