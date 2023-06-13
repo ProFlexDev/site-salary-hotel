@@ -4,7 +4,7 @@
 
 <?php
 
-$href_day_table = 'includes/com/page/day_table.php';
+$href_day_table = 'day_table.php';
 
 
 include ('includes/config.php');
@@ -41,7 +41,7 @@ $totalPayment = 0;
 
 foreach ($monthlyReport as $report) {
     echo "<tr>";
-    echo "<td><a class='href_date' href=' <?= $href_day_table ?> '>{$report['date']}</a></td>";
+    echo "<td><a class='href_date' href=' $href_day_table '> {$report['date']} </a></td>";
     echo "<td>{$report['start_time']}</td>";
     echo "<td>{$report['end_time']}</td>";
     echo "<td>{$report['general_cleanings']}</td>";
