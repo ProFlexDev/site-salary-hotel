@@ -4,7 +4,11 @@
 if ($_SERVER['PHP_SELF'] == '/index.php') $page = 'Home';
 if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php') $page = 'Table salary';
 
-$href_month_table = 'includes/com/page/month_table.php';
+if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php' || '/includes/com/page/day_table.php') {
+    $href_month_table = '/includes/com/page/month_table.php';
+} else {
+    $href_month_table = 'includes/com/page/month_table.php';
+}
 
 
 ?>

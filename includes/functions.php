@@ -11,6 +11,10 @@ function getMonthlyReport($month, $staffId)
 {
     $connect = mysqli_connect('localhost', 'root', '', 'testproflex');
 
+
+
+
+
     // Запрос для получения отчета по всем работам за указанный месяц
     $query = "
     SELECT
