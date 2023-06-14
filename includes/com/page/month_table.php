@@ -8,11 +8,10 @@ $href_day_table = 'day_table.php';
 
 
 include ('includes/config.php');
-include ('includes/database.php');
 include ('includes/functions.php');
 
 include $_SERVER['DOCUMENT_ROOT']."/includes/functions.php";
-include $_SERVER['DOCUMENT_ROOT']."/includes/database.php";
+
 
 $connect = mysqli_connect('localhost', 'root', '', 'testproflex');
 
