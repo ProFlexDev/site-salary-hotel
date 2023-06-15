@@ -12,7 +12,6 @@ if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php' || '/includes/c
 
 
 
-//la la la
 ?>
 
 
