@@ -25,7 +25,9 @@ $connect = mysqli_connect('localhost', 'root', '', 'testproflex');
 $staffId = 167;
 $month = 9;
 $monthlyReport = getMonthlyReport($month, $staffId);
-
+// echo "<pre>";
+// print_r($monthlyReport);
+// echo "<pre>";
 // Вывод отчета по всем работам за сентябрь
 echo "<table class=' tableded ' border='black 2px solid'>";
 echo "<thead><tr class='tr-month_table'>
@@ -41,10 +43,12 @@ echo "<thead><tr class='tr-month_table'>
 
 //
 $totalPayment = 0;
+$totalPayment_day = 0;
 
 foreach ($monthlyReport as $report) {
     echo "<tr>";
-    echo "<td><a class='href_date' href=\"date={$report['date']}\"> {$report['date']} </a></td>";
+    // echo "<td><a class='href_date' href=\"date={$report['date']}\"> {$report['date']} </a></td>";
+    echo "<td><a href=\"index.php?date={$report['date']}\">{$report['date']}</a></td>";
     echo "<td>{$report['start_time']}</td>";
     echo "<td>{$report['end_time']}</td>";
     echo "<td>{$report['general_cleanings']}</td>";
@@ -55,6 +59,7 @@ foreach ($monthlyReport as $report) {
 
     $totalPayment += $report['total_payment'];
 }
+
 
 echo "</table>";
 
@@ -89,13 +94,14 @@ if (isset($_GET['date'])) {
         echo "<td>{$work['end_clean']}</td>";
         echo "<td>{$work['cleaning_price']}</td>";
         echo "</tr>";
+        $totalPayment_day += $work['cleaning_price'];
     }
 
     echo "</tbody>";
     echo "</table>";
 
 
-    // echo "<p>Итоговая сумма за день: $totalPayment руб.</p>";
+    echo "<p>Итоговая сумма за день: $totalPayment_day руб.</p>";
 
 
     if (mysqli_connect_errno()) {
