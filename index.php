@@ -27,7 +27,7 @@ $month = 9;
 $monthlyReport = getMonthlyReport($month, $staffId);
 
 // Вывод отчета по всем работам за сентябрь
-echo "<table class='table table-striped'>";
+echo "<table class=' tableded ' border='black 2px solid'>";
 echo "<thead><tr class='tr-month_table'>
     <th class='th_month_table th_date'>Дата</th>
     <th class='th_month_table'>Начало <br> рабочего дня</th>
@@ -39,13 +39,12 @@ echo "<thead><tr class='tr-month_table'>
     </tr></thead>";
 
 
-echo "<tbody>";
 
 $totalPayment = 0;
 
 foreach ($monthlyReport as $report) {
     echo "<tr>";
-    echo "<td><a class='href_date' href=' '> {$report['date']} </a></td>";
+    echo "<td><a class='href_date' href=\"date={$report['date']}\"> {$report['date']} </a></td>";
     echo "<td>{$report['start_time']}</td>";
     echo "<td>{$report['end_time']}</td>";
     echo "<td>{$report['general_cleanings']}</td>";
@@ -57,7 +56,6 @@ foreach ($monthlyReport as $report) {
     $totalPayment += $report['total_payment'];
 }
 
-echo "</tbody>";
 echo "</table>";
 
 echo "<p>Итоговая сумма за сентябрь: $totalPayment руб.</p>";
@@ -101,7 +99,7 @@ if (isset($_GET['date'])) {
 
 
     if (mysqli_connect_errno()) {
-        exit('Failed to connect to MySQL: ' . mysqli_error());
+        exit('Failed to connect to MySQL: ' . mysqli_error($connect));
     }
 
 // Пример использования функций для получения отчета по всем работам за сентябрь
@@ -140,6 +138,22 @@ mysqli_close($connect);
 <style>
     .href_date{ text-decoration: none; color: #0a53be; font-weight: 700; }
     .th_date{ font-size: 22px; font-weight: 700; }
+    .th_month_table{ padding: 15px }
+
+
+
+
+    .tableded{width:100%;border:none;border-collapse:separate}
+    .tableded thead th{font-weight:bold;text-align:left;border:none;padding:10px 15px;background:#EDEDED;font-size:14px;border-top:1px solid #ddd}
+    .tableded tbody td{text-align:left;border:none;padding:12px 15px;font-size:16px;vertical-align:top;font-weight:600}
+    .tableded tr td:first-child,.table tr th:first-child{border-left:1px solid #ddd}
+    .tableded tr td:last-child,.table tr th:last-child{border-right:1px solid #ddd}
+    .tableded thead tr th:first-child{border-radius:20px 0 0 0}
+    .tableded thead tr th:last-child{border-radius:0 20px 0 0}
+    .tableded tbody tr:nth-child(2n){background:#F8F8F8}
+    .tableded tbody tr:last-child td{border-bottom:1px solid #ddd}
+    .tableded tbody tr:last-child td:first-child{border-radius:0 0 0 20px}
+    .tableded tbody tr:last-child td:last-child{border-radius:0 0 20px 0}
 </style>
 
 
