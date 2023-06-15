@@ -11,6 +11,8 @@ if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php' || '/includes/c
 }
 
 
+
+//la la la
 ?>
 
 
@@ -32,7 +34,7 @@ if ($_SERVER['PHP_SELF'] == '/includes/com/page/month_table.php' || '/includes/c
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href=' <?= $href_month_table ?> '>Salary schedule table</a>
+                    <a class="nav-link active" aria-current="page" href="#">Salary schedule table</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contacts</a>
