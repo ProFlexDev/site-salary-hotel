@@ -4,57 +4,151 @@
 include ('includes/config.php');
 include ('includes/database.php');
 
-//double push
+
+
+$staffId = 167;
+$month = 9;
 
 // Функция для получения отчета по всем работам за сентябрь
 function getMonthlyReport($month, $staffId)
 {
     $connect = mysqli_connect('localhost', 'root', '', 'testproflex');
 
+
+
+
+
     // Запрос для получения отчета по всем работам за указанный месяц
     $query = "
     SELECT
     DATE_FORMAT(start, '%Y-%m-%d') AS date,
-    MIN(start) AS start_time,
-    MAX(end) AS end_time,
+    
+    (
+        SELECT TIME_FORMAT(Time(start), '%H:%i') FROM statistics WHERE DATE(start) = date AND work = 0
+    ) AS start_time,
+    
+    (
+        SELECT TIME_FORMAT(Time(end), '%H:%i') FROM statistics WHERE DATE(start) = date AND work = 0
+    ) AS end_time,
+    
     SUM(CASE WHEN work = 1 THEN 1 ELSE 0 END) AS general_cleanings,
     SUM(CASE WHEN work = 2 THEN 1 ELSE 0 END) AS current_cleanings,
     SUM(CASE WHEN work = 3 THEN 1 ELSE 0 END) AS check_ins,
     (
-                SELECT
-                    
-                    SUM(subquery.cleaning_price) AS total_payment
-                FROM
-                    statistics
-                INNER JOIN
-                    rooms ON statistics.room = rooms.num
-                INNER JOIN
-                    (
-                    SELECT
-                        s.id AS id_work,
-                        p.price AS cleaning_price
-                    FROM
-                        statistics s
-                    INNER JOIN
-                        prices p ON s.work = p.work
-                    ) AS subquery ON statistics.id = subquery.id_work
-                WHERE
-                    DATE(statistics.created) = date
-                GROUP BY
-                    DATE(statistics.created)
-    ) AS total_payment
-    FROM
-        statistics
-    INNER JOIN
-        works ON statistics.work = works.id
-    WHERE
-        staff = ?
-        AND MONTH(start) = ?
-    GROUP BY
-        date
-    ORDER BY
-        date ASC;
+    SELECT SUM(work_count) AS total_work_count
+FROM (
+  (((((((SELECT COUNT(*) * 110 AS work_count
+  FROM statistics
+  INNER JOIN rooms ON statistics.room = rooms.num
+  INNER JOIN prices ON prices.work = statistics.work
+  WHERE rooms.type = 1
+    AND DATE(statistics.start) = date
+    AND statistics.work = 2
+  GROUP BY DATE(statistics.start)
 
+  UNION ALL
+
+  SELECT COUNT(*) * 40 AS work_count
+  FROM statistics
+  INNER JOIN rooms ON statistics.room = rooms.num
+  INNER JOIN prices ON prices.work = statistics.work
+  WHERE rooms.type = 1
+    AND DATE(statistics.start) = date
+    AND statistics.work = 3
+  GROUP BY DATE(statistics.start))
+    
+    UNION ALL
+    
+SELECT COUNT(*)*10 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 1
+  AND DATE(statistics.start) = date
+  AND statistics.work = 1
+GROUP BY DATE(statistics.start))
+    
+UNION ALL
+    
+    SELECT COUNT(*)*10 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 2
+  AND DATE(statistics.start) = date
+  AND statistics.work = 1
+GROUP BY DATE(statistics.start))
+    
+UNION ALL
+    
+    SELECT COUNT(*)*10 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 3
+  AND DATE(statistics.start) = date
+  AND statistics.work = 1
+GROUP BY DATE(statistics.start))
+
+UNION ALL
+    
+    SELECT COUNT(*)*165 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 2
+  AND DATE(statistics.start) = date
+  AND statistics.work = 2
+GROUP BY DATE(statistics.start))
+
+    
+    UNION ALL
+    
+    SELECT COUNT(*)*60 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 2
+  AND DATE(statistics.start) = date
+  AND statistics.work = 3
+GROUP BY DATE(statistics.start))
+    
+    UNION ALL
+    
+    SELECT COUNT(*)*220 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 3
+  AND DATE(statistics.start) = date
+  AND statistics.work = 2
+GROUP BY DATE(statistics.start))
+
+    
+    UNION ALL
+    
+    SELECT COUNT(*)*80 AS work_count
+FROM statistics
+INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN prices ON prices.work = statistics.work
+WHERE rooms.type = 3
+  AND DATE(statistics.start) = date
+  AND statistics.work = 3
+GROUP BY DATE(statistics.start)
+
+) AS subquery
+    ) AS total_payment
+FROM
+    statistics
+INNER JOIN
+    works ON statistics.work = works.id
+WHERE
+    staff = ?
+    AND MONTH(start) = ?
+GROUP BY
+    date
+ORDER BY
+    date ASC;
     ";
 
     $stmt = $connect->prepare($query);
