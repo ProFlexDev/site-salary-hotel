@@ -39,7 +39,7 @@ function getMonthlyReport($month, $staffId)
 FROM (
   (((((((SELECT COUNT(*) * 110 AS work_count
   FROM statistics
-  INNER JOIN rooms ON statistics.room = rooms.num
+  INNER JOIN rooms ON statistics.room = rooms.id
   INNER JOIN prices ON prices.work = statistics.work
   WHERE rooms.type = 1
     AND DATE(statistics.start) = date
@@ -50,7 +50,7 @@ FROM (
 
   SELECT COUNT(*) * 40 AS work_count
   FROM statistics
-  INNER JOIN rooms ON statistics.room = rooms.num
+  INNER JOIN rooms ON statistics.room = rooms.id
   INNER JOIN prices ON prices.work = statistics.work
   WHERE rooms.type = 1
     AND DATE(statistics.start) = date
@@ -61,7 +61,7 @@ FROM (
     
 SELECT COUNT(*)*10 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 1
   AND DATE(statistics.start) = date
@@ -72,7 +72,7 @@ UNION ALL
     
     SELECT COUNT(*)*10 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 2
   AND DATE(statistics.start) = date
@@ -83,7 +83,7 @@ UNION ALL
     
     SELECT COUNT(*)*10 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 3
   AND DATE(statistics.start) = date
@@ -94,7 +94,7 @@ UNION ALL
     
     SELECT COUNT(*)*165 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 2
   AND DATE(statistics.start) = date
@@ -106,7 +106,7 @@ GROUP BY DATE(statistics.start))
     
     SELECT COUNT(*)*60 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 2
   AND DATE(statistics.start) = date
@@ -117,7 +117,7 @@ GROUP BY DATE(statistics.start))
     
     SELECT COUNT(*)*220 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 3
   AND DATE(statistics.start) = date
@@ -129,7 +129,7 @@ GROUP BY DATE(statistics.start))
     
     SELECT COUNT(*)*80 AS work_count
 FROM statistics
-INNER JOIN rooms ON statistics.room = rooms.num
+INNER JOIN rooms ON statistics.room = rooms.id
 INNER JOIN prices ON prices.work = statistics.work
 WHERE rooms.type = 3
   AND DATE(statistics.start) = date
@@ -195,7 +195,7 @@ function getDailyWork($date)
     FROM
         statistics
     INNER JOIN
-        rooms ON statistics.room = rooms.num
+        rooms ON statistics.room = rooms.id
     INNER JOIN
         (
         SELECT
