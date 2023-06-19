@@ -47,8 +47,7 @@ $totalPayment_day = 0;
 
 foreach ($monthlyReport as $report) {
     echo "<tr>";
-    // echo "<td><a class='href_date' href=\"date={$report['date']}\"> {$report['date']} </a></td>";
-    echo "<td>{$report['date']}</td>";
+  
     echo "<td><a href=\"index.php?date={$report['date']}\" class='href_date'>{$report['date']}</a></td>";
     echo "<td>{$report['start_time']}</td>";
     echo "<td>{$report['end_time']}</td>";
