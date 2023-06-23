@@ -33,34 +33,71 @@ function getMonthlyReport($month, $staffId)
     SUM(CASE WHEN work = 2 THEN 1 ELSE 0 END) AS current_cleanings,
     SUM(CASE WHEN work = 3 THEN 1 ELSE 0 END) AS check_ins,
     (
-        SELECT SUM(cleaning_price)
-        FROM
+       (SELECT SUM(total_amount) AS total_sum
+		FROM
         (
-            SELECT
-                s.id AS id_work,
-                p.price AS cleaning_price
+            SELECT SUM(cleaning_price) AS total_amount
             FROM
-                statistics AS s
-            INNER JOIN
-                prices AS p ON s.work = p.work
-            INNER JOIN 
-                rooms ON rooms.id = s.room
-            WHERE
-                (
-                    (s.work = 1 AND rooms.id = 2) OR
-                    (s.work = 1 AND rooms.type = 3) OR
-                    (s.work = 1 AND rooms.type = 1) OR
-                    (s.work = 2 AND rooms.type = 1) OR
-                    (s.work = 3 AND rooms.type = 1) OR
-                    (s.work = 2 AND rooms.type = 2) OR
-                    (s.work = 2 AND rooms.type = 3) OR
-                    (s.work = 3 AND rooms.type = 2) OR
-                    (s.work = 3 AND rooms.type = 3)
-                )
+            (
+                SELECT
+                    s.id AS id_work,
+                    p.price AS cleaning_price
+                FROM
+                    statistics AS s
+                INNER JOIN
+                    prices AS p ON s.work = p.work
+                INNER JOIN 
+                    rooms ON rooms.id = s.room
+                WHERE
+                    (
+                        (s.work = 1 AND rooms.id = 2) OR
+                        (s.work = 1 AND rooms.type = 3) OR
+                        (s.work = 1 AND rooms.type = 1) OR
+                        (s.work = 2 AND rooms.type = 1) OR
+                        (s.work = 3 AND rooms.type = 1) OR
+                        (s.work = 2 AND rooms.type = 2) OR
+                        (s.work = 2 AND rooms.type = 3) OR
+                        (s.work = 3 AND rooms.type = 2) OR
+                        (s.work = 3 AND rooms.type = 3)
+                    )
                 AND
-                DATE(s.created) = date
-        ) AS subquery
-    ) AS total_payment
+                DATE(s.created) = Date
+            ) AS subquery1
+
+            UNION ALL
+
+            SELECT
+                SUM(
+                    (
+                        SELECT COUNT(*) * 30
+                        FROM statistics
+                        WHERE
+                        statistics.bed = 1
+                        AND statistics.towels = 0
+                        AND DATE(statistics.start) = Date
+                    )
+                    +
+                    (
+                        SELECT COUNT(*) * 10
+                        FROM statistics
+                        WHERE
+                        statistics.towels = 1
+                        AND statistics.bed = 0
+                        AND DATE(statistics.start) = Date
+                    )
+                    +
+                    (
+                        SELECT COUNT(*) * 40
+                        FROM statistics
+                        WHERE
+                        statistics.towels = 1
+                        AND statistics.bed = 1
+                        AND DATE(statistics.start) = Date
+                    )
+            ) AS cleaning_bed_towels
+			) as common
+		)
+        ) AS total_payment
 FROM
     statistics
 INNER JOIN
